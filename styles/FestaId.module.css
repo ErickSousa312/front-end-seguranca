@@ -1,0 +1,33 @@
+.box {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+}
+
+.button {
+    color: rgb(0, 0, 0);
+    margin-top: 40px;
+    text-decoration: none;
+    transition: 0.5s;
+    display: flex;
+    justify-content: center;
+    border: solid 1px;
+    width: 130px;
+    border-radius: 40px;
+}
+
+.box2{
+    color: rgb(0, 0, 0);
+    text-decoration: none;
+    transition: 0.5s;
+    display: flex;
+    justify-content: center;
+    
+}
+
+.button :hover{
+    color: #bbff00;
+}
+.box2 :hover{
+    color: #bbff00;
+}

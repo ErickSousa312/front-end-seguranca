@@ -1,0 +1,31 @@
+.campo-texto{
+    display: flex;
+    justify-content: center;
+    width: 125%;
+}
+
+
+.campo-texto input{
+    background-color: #fff;
+    box-shadow: 5px 5px 12px rgba(0,0,0,30%);
+    width: 80%;
+    border: none;
+    font-size: 24px;
+    padding: 15px 25px;
+    box-sizing: border-box;
+    border-radius: 15px;
+    padding-left: 3rem;
+}
+
+@media screen and (max-width: 600px) {
+    .campo-texto input{
+        width: 100%;
+    }
+    .campo-texto label{
+        display: flex;
+        margin-bottom: 8px;
+        font-size: 24px;
+        display: contents;
+    }
+
+}

@@ -1,0 +1,128 @@
+.mainContainer{
+    background-color: rgb(255, 255, 255);
+    height: 90vh;
+    display: contents;display: contents;
+    height: 102vh;
+}
+
+.container{
+    display: grid;
+    grid-template-columns: 2fr 5fr;
+    background-color: rgb(247 247 247);
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    box-shadow: 10px 10px 30px rgba(0,0,0,31%);
+    height: 635px;
+}
+
+.cadastrar{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(0, 0, 0);
+    justify-content: center;
+    border-radius: 15px 0 0 15px;
+    color: aliceblue;
+    text-align: center;
+    
+}
+
+.forms{display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 600px;
+    box-sizing: content-box;
+    margin: 6% 7%;
+    height: 35em;
+    margin-top: 4em;
+    background-color: rgb(0 55 255 / 64%);
+    border-radius: 20px;
+    box-shadow: 12px 12px 9px rgba(0,0,0,30%);
+}
+
+
+.inputs{
+    display: grid;
+    place-items: center;
+    width: 80%;
+    box-sizing: border-box;
+}
+
+.h1Cadastro{
+
+}
+
+.h2Cadastro{
+    margin-top: 4em;
+    font-weight: 900;
+}
+.h3Cadastro{
+    margin-top: 4em;
+    text-align: justify;
+    color: rgb(0 55 255 / 64%);
+    font-size: 14px;
+}
+
+.h3Forms{
+    margin-top: 6.6em;
+    padding: 0 3.5em;
+    font-size: 14px;
+    color: rgb(0 55 255 / 64%);
+}
+
+.h2Forms{
+    margin-top: 1em;
+    text-align: justify;
+    padding: 0 3.5em;
+}
+
+.linha1{    
+    width: 100%;
+    padding: 1px;
+    background-color: black;
+    border-radius: 25px;
+    height: 1px;
+    align-self: center;
+    
+    margin-right: 30px;
+}
+
+.linha2{    
+    width: 100%;
+    padding: 1px;
+    background-color: rgb(0 55 255 / 100%);
+    border-radius: 25px;
+    height: 1.2px;
+    align-self: center;
+    
+}
+
+.OU{
+    display:flex;
+     width:43em;
+    font-size: 11px;
+    margin-top: 1em;
+
+}
+
+.loginGoogle{
+    display: flex;
+    align-items: center;
+    margin-top: 28px;
+    font-weight: bold;
+    color: black;
+}
+
+.iconGoogle{
+    margin-right: 7px;
+}
+
+.iconEmail{
+    position: relative;
+    top: 2.5em;
+    right: 13.6em;
+}

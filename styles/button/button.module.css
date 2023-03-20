@@ -1,0 +1,41 @@
+.botao{
+    background-color: #6278f700;
+    border-radius: 25px;
+    font-weight: 700;
+    font-size: 18px;
+    padding: 15px 25px;
+    border: none;
+    cursor: pointer;
+    color: #fff;
+    margin: 32px 0;
+    border: solid 1px;
+    box-sizing: content-box;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+
+}
+
+.botao:hover {
+    background-color: rgb(128, 128, 128)!important;
+    background-position: right center;
+    background-size: 200% auto;
+    -webkit-animation: pulse 2s infinite;
+    animation: pulse512 1s infinite;
+}
+
+
+@keyframes pulse512 {
+    0% {
+     box-shadow: 0 0 0 0 #010a0cfd;
+    }
+   
+    70% {
+     box-shadow: 0 0 0 10px rgb(218 103 68 / 0%);
+    }
+   
+    100% {
+     box-shadow: 0 0 0 0 rgb(218 103 68 / 0%);
+    }
+   }
+   

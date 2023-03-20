@@ -1,0 +1,40 @@
+
+/* styles.module.css */
+.botao2 {
+    border: none;
+    color: #fff;
+    background-image: linear-gradient(30deg, #f8f8f8, #dfe0e0);
+    border-radius: 20px;
+    background-size: 100% auto;
+    font-family: inherit;
+    font-size: 17px;
+    padding: 0.6em 1.5em;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: center;
+}
+   
+   
+   .botao2:hover {
+    background-position: right center;
+    background-size: 200% auto;
+    -webkit-animation: pulse 2s infinite;
+    animation: pulse512 1s infinite;
+   }
+   
+   @keyframes pulse512 {
+    0% {
+     box-shadow: 0 0 0 0 #010a0cfd;
+    }
+   
+    70% {
+     box-shadow: 0 0 0 10px rgb(218 103 68 / 0%);
+    }
+   
+    100% {
+     box-shadow: 0 0 0 0 rgb(218 103 68 / 0%);
+    }
+   }
+   
