@@ -25,10 +25,9 @@ function reducer(livroDados, action){
 const Form = (props) => {
 
     const [livroDados, dispath] = useReducer(reducer, {
-        titulo: '',
-        autor: '',
-        capa: '',
-        categoria: props.categorias[0]
+        nomeEleicao: '',
+        opcoes: [],
+        hash: '',
     })
 
     const Salvar = (evento) => {

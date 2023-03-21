@@ -1,0 +1,118 @@
+.mainContainer{
+    background-color: rgb(211 13 13);
+    height: 100%;
+    padding: 0;
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+}
+
+.container{
+    display: flex;
+    background-color: rgb(27, 26, 26);
+    align-items: center;
+    box-shadow: 10px 10px 16px rgb(0 0 0 / 30%);
+    height: 100%;
+}
+.barNavitaion{
+    display: flex;
+    width: 15%;
+    background-color: #fdfeff;
+    height: 100%;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    z-index: 2;
+    box-shadow: 8px 9px 15px 0px rgb(0 0 0 / 30%);
+}
+
+.areaData{
+    display: flex;
+    justify-content: center;
+    background-color: #c9c9c9;
+    width: 85%;
+    height: 100%;
+    z-index: 1;
+    overflow-y: auto;
+    flex-direction: column;
+}
+
+.iconGoogle{
+    margin-right: 7px;
+}
+
+.iconEmail{
+    margin-right: 7px;
+}
+
+.areaData::-webkit-scrollbar {
+    width: 10px; /* Largura da barra de rolagem */
+  }
+  
+  .areaData::-webkit-scrollbar-thumb {
+    background-color: #080808; /* Cor do botão de rolagem */
+    border-radius: 2px; /* Borda arredondada do botão de rolagem */
+  }
+  
+  .areaData::-webkit-scrollbar-track {
+    background-color: #c9c9c9; /* Cor de fundo da barra de rolagem */
+  }
+  .buttonLogOut {
+    border: none;
+    color: #000000;
+    background-image: linear-gradient(30deg, #f8f8f8, #dfe0e0);
+    border-radius: 20px;
+    background-size: 100% auto;
+    font-family: inherit;
+    font-size: 17px;
+    padding: 0.6em 1.5em;
+    cursor: pointer;
+    align-items: center;
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: center;
+    position: absolute;
+    bottom: 2%;
+    width: 10%;
+}
+   
+   
+   .buttonLogOut:hover {
+    background-position: right center;
+    background-size: 200% auto;
+    -webkit-animation: pulse 2s infinite;
+    animation: pulse512 1s infinite;
+   }
+   
+   @keyframes pulse512 {
+    0% {
+     box-shadow: 0 0 0 0 #010a0cfd;
+    }
+   
+    70% {
+     box-shadow: 0 0 0 10px rgb(218 103 68 / 0%);
+    }
+   
+    100% {
+     box-shadow: 0 0 0 0 rgb(218 103 68 / 0%);
+    }
+   }
+   
+   .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 12px;
+    margin: 75px;
+  }
+  .item {
+    border-radius: 15px;
+    padding: 5px;
+    text-align: center;
+    background-color: #fff;
+    font-family:  'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-weight: bold;
+  }
+   
+  .item:hover {
+    background-color: #f2f2f2;
+  }

@@ -3,7 +3,7 @@ const InputText = (props) => {
 
    
    const Digitado = (evento) => {
-      props.Alterado(evento.target.value)
+      props.SetDados(evento.target.value)
    }
 
    return (
