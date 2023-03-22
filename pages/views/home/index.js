@@ -13,6 +13,7 @@ import { BsPeople} from "react-icons/bs";
 import { CgProfile,CgReadme} from "react-icons/cg";
 import Btn from '@/components/Button/login-btn'
 import { redirect } from 'next/dist/server/api-utils';
+import Link from 'next/link';
 
 export async function verifyAuth(context) {
   const session = await getSession(context)
@@ -83,6 +84,7 @@ export default function PrivateArea() {
       <div className={styles.container}>
         <div className={styles.barNavitaion} >
           <Button2
+           LinkTO = {"/views/home"}
           fontSize={"19px"}
             padding={"12px 19px"}
             
@@ -91,10 +93,11 @@ export default function PrivateArea() {
             cor={"black"}
             width={"89%"}>
             <CgProfile className={styles.iconGoogle} size={20}></CgProfile>
-            Votar
+            Home
           </Button2>
           
           <Button2
+           LinkTO = {"/views/votar"}
             fontSize={"19px"}
             margin={"4px 0px"}
             padding={"10px 14px"}
@@ -104,8 +107,22 @@ export default function PrivateArea() {
             cor={"black"}
             width={"89%"}>
               <CgReadme className={styles.iconGoogle} size={22}></CgReadme>
-            Criar votação
+            Votar
           </Button2>
+          <Button2
+                        LinkTO = {"/views/eleicao"}
+                        fontSize={"19px"}
+                        margin={"4px 0px"}
+                        padding={"10px 14px"}
+                        margintop={"1rem"}
+                        backgroundColor={'white'}
+                        border={'none'}
+                        cor={"black"}
+                        width={"89%"}
+                        >
+                        <CgReadme className={styles.iconGoogle} size={22}></CgReadme>
+                        Criar Eleicão
+                    </Button2>
           <button className={styles.buttonLogOut} onClick={() => deslogar()}>Sair</button>
         </div>
         <div className={styles.areaData}> 

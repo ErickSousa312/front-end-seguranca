@@ -1,11 +1,14 @@
 import styles from '@/styles/button/button2.module.css'
 import { useEffect, useState } from 'react'
+import {useRouter} from 'next/router'
 
 const Button2 = (props) => {
+    const router = useRouter()
     const estilo = props.className || styles.botao
     return (
         <button
             className={styles.botao2}
+            onClick={()=>router.push(props.LinkTO)}
             style={{
                 border: props.border,
                 backgroundColor: props.backgroundColor,
@@ -18,8 +21,8 @@ const Button2 = (props) => {
                 marginLeft: props.marginLeft,
                 marginRight: props.marginRight,
                 fontSize: props.fontSize,
-                marginTop: props.marginTop
-            }}>
+                marginTop: props.marginTop,
+            }} >
             {props.children}
         </button>
     )

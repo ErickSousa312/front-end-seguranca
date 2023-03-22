@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/font": "13.1.6",
+    "async_hooks": "^1.0.0",
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.3",
@@ -22,6 +23,7 @@
     "next": "13.1.6",
     "next-auth": "^4.20.1",
     "nodemon": "^2.0.20",
+    "notistack": "^3.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.8.0"
