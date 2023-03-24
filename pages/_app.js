@@ -4,7 +4,7 @@ import MainContainer from '../components/MainContainer'
 import { useRouter } from "next/router";
 import { SnackbarProvider } from 'notistack';
 
-function App({ Component, children, session }) {
+function App({ Component, pageProps, session }) {
   const router = useRouter();
   return (
     <motion.div
@@ -15,7 +15,7 @@ function App({ Component, children, session }) {
     >
       <SnackbarProvider maxSnack={3}>
         <MainContainer session={session}>
-          <Component{...children} />
+          <Component{...pageProps} />
         </MainContainer>
       </SnackbarProvider>
 
