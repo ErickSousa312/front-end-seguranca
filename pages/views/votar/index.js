@@ -44,8 +44,11 @@ function reducer(dadosEleicao, action) {
             ...dadosEleicao, nomeEleicao: action.payload,
         };
     case 'setOpcao':
+        const salts= 10
+        const salt = bcrypt.genSaltSync(salts)
+        const hash = bcrypt.hashSync(action.payload, salt)
         return { 
-            ...dadosEleicao, opcoes: action.payload
+            ...dadosEleicao, opcao: action.payload, idEleicao: action.iD, hash: hash
         };
     case 'sethash':
         return{
@@ -55,20 +58,13 @@ function reducer(dadosEleicao, action) {
         return{
             ...dadosEleicao, 
         }
-    case 'removeOpcao':
-        return {
-            ...dadosEleicao,
-            opcoes: dadosEleicao.opcoes.slice(0, -1)// cria uma nova array excluindo o último elemento
-        };
-    case 'salvarOpcao':
-        return {
-            ...dadosEleicao,
-            opcoes: [
-                ...dadosEleicao.opcoes.slice(0, action.Index),
-                action.payload,
-                ...dadosEleicao.opcoes.slice(action.Index + 1)
-              ]
-          };
+    case 'reset':
+        return{
+            nomeEleicao: "",
+            opcao: "",
+            hash: "",
+            idEleicao: ""
+        }
     default:
       throw new Error('Tipo de ação desconhecido.');
   }
@@ -89,7 +85,8 @@ export default function PrivateArea() {
     const [dadosEleicao, dispath] = useReducer(reducer, {
         nomeEleicao: "",
         opcao: "",
-        hash: ""
+        hash: "",
+        idEleicao: ""
     })
 
     async function deslogar() {
@@ -138,20 +135,33 @@ export default function PrivateArea() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            await fetch(`http://localhost:3002/Voto/${dadosEleicao.nomeEleicao}`)
+            await fetch(`http://localhost:3002/Voto`,{
+                method:'POST',
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    eleicao: dadosEleicao.idEleicao,
+                    email: session.user.email,
+                    voto: dadosEleicao.opcao,
+                    hash: dadosEleicao.hash
+                })
+            })
             .then((response)=>{
                 if(response.ok){
                     return response.json();   
                 }else{
-                    throw new Error('Erro ao criar eleição');
+                    throw new Error('Erro salvar voto');
                 }
             })
             .then((data)=>{
-                enqueueSnackbar('Eleição encontrada de sucesso', { variant: 'success' });
+                enqueueSnackbar('voto realizado com sucesso', { variant: 'success' });
+                dispath({type:'reset'})
                 console.log(data.opcoes)
             })
             .catch(error =>{
-                enqueueSnackbar('Ocorreu um erro ao buscar a eleiçao', { variant:'error'})
+                console.log(error)
+                enqueueSnackbar('Ocorreu um erro ao registrar o voto', { variant:'error'})
             })
         } catch (error) {
             console.log(error)
@@ -165,6 +175,11 @@ export default function PrivateArea() {
             opcaoSelecionada: event.target.value,
         });
     };
+
+    async function gerarHash(dado) {
+        const hash = await bcrypt.hash(dado, 10);
+        return hash;
+    }
 
     return (
         <div className={styles.mainContainer}>
@@ -220,22 +235,28 @@ export default function PrivateArea() {
                                 required
                                 type="text"
                                 value={dadosEleicao.nomeEleicao}
-                                onChange={(event) => dispath({ type: "setNomeEleicao", payload: event.target.value, Hash: gerarHash(event.target.value) })}
+                                onChange={(event) => dispath({ type: "setNomeEleicao", payload: event.target.value, Hash: gerarHash(session.user.email) })}
                             />
                             <button onClick={(e)=>pesquisarEleicao(e)} >
                                 Pesqusiar
                             </button>
                             
-                            {dados?.map(({opcoes, nomeEleicao}) => (
+                            {dados?.map(({_id,opcoes, nomeEleicao}) => (
                                 <div key={nomeEleicao}>
                                     <h4>Opções:</h4>
-                                    <form>
+                                    <form onSubmit={handleSubmit}>
                                     {opcoes.map((to)=>(
-                                    <>
+                                        <>
                                         <div key={to}></div>
-                                        <input type='radio' value={to} checked={dadosEleicao.opcoes === to} onChange={(event)=>dispath({type:"setOpcao", payload: event.target.value})}></input>
+                                        <input type='radio' 
+                                            value={to} 
+                                            checked={dadosEleicao.opcao === to} 
+                                            onChange={
+                                                (event)=>dispath({type:"setOpcao", payload: event.target.value, iD: _id, Hash: gerarHash(event.target.value) })
+                                            }>
+                                        </input>
                                         <label>{to}</label>
-                                    </>
+                                        </>
                                     ))}
                                         <button style={{display:"flex"}} type="submit" >
                                             Registrar Voto

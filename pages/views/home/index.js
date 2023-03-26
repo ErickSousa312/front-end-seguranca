@@ -129,10 +129,8 @@ export default function PrivateArea() {
         <div className={styles.grid}>
             {dados?.map((todo) => (
               <div key={todo.id} className={styles.item}>
-                <p className={styles.item}>{todo.nomeEleicao}</p>
-                {todo.opcoes?.map((opcao)=>(
-                  <p key={opcao} >-{opcao}</p>
-                ))}
+                <p className={styles.item}>{todo.nomeEleicao}</p><br/>
+                
               </div>
             ))}
         </div>
