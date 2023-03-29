@@ -1,19 +1,21 @@
-import { useReducer, useState, useEffect } from 'react'
+import { useReducer, useState, useEffect, useRef } from 'react'
 import { useSession, signIn, signOut, getSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 import styles from '@/styles/views/home.module.css'
 import Button from '@/components/Button/button'
 import Navbar from '@/components/Navbar'
 import Button2 from '@/components/Button/button2'
-import { MdHistory, MdArrowForwardIos, MdArticle,MdOutlinePeople } from 'react-icons/md';
+import { MdHistory, MdArrowForwardIos, MdArticle, MdOutlinePeople } from 'react-icons/md';
 import { FcGoogle } from "react-icons/fc";
 import { AiFillFileText } from "react-icons/ai";
 import { HiOutlineMail, HiLockClosed, HiHome, } from "react-icons/hi";
-import { BsPeople} from "react-icons/bs";
-import { CgProfile,CgReadme} from "react-icons/cg";
+import { BsPeople } from "react-icons/bs";
+import { CgProfile, CgReadme } from "react-icons/cg";
 import Btn from '@/components/Button/login-btn'
 import { redirect } from 'next/dist/server/api-utils';
 import Link from 'next/link';
+import EventSource from 'eventsource';
+import io from 'socket.io-client';
 
 export async function verifyAuth(context) {
   const session = await getSession(context)
@@ -40,40 +42,65 @@ function reducer(dadosLogin, action) {
 }
 
 
+function useInterval(callback, delay) {
+  const savedCallback = useRef();
+
+  useEffect(() => {
+    savedCallback.current = callback;
+  }, [callback]);
+
+  useEffect(() => {
+    function tick() {
+      savedCallback.current();
+    }
+
+    if (delay !== null) {
+      const id = setInterval(tick, delay);
+      return () => clearInterval(id);
+    }
+  }, [delay]);
+}
+
+
 export default function PrivateArea() {
+  const socket = io();
   const [dados, setDados] = useState(null);
   const [erro, setErro] = useState(null);
   const { data: session, status } = useSession();
   const router = useRouter();
   const [dadosLogin, dispath] = useReducer(reducer, {
-    email:"",
-    Senha:""
+    email: "",
+    Senha: ""
   });
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch('http://localhost:3002/Eleicao');
-        if (response.ok) {
-          const data = await response.json();
+  const fetchData = async () => {
+    try {
+      await fetch(`http://localhost:3002/Eleicao/`)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();   
+          } else {
+            throw new Error('Erro ao criar eleição');
+          }
+        })
+        .then((data) => {
           setDados(data);
-          console.log(data)
-          setErro(null);
-        } else {
-          const error = await response.json();
-          setDados(null);
-          setErro(error.message);
-        }
-      } catch (error) {
-        setDados(null);
-        setErro('Ocorreu um erro ao processar sua solicitação.');
-      }
+          console.log(data);
+          enqueueSnackbar('Eleição encontrada com sucesso', { variant: 'success' });
+        })
+        .catch((error) => {
+          console.error(error);
+          enqueueSnackbar('Ocorreu um erro ao buscar a eleição', { variant: 'error' });
+        });
+    } catch (error) {
+      console.log(error);
     }
-    fetchData();
-  }, []);
- 
-  
-  async function deslogar(){
+    
+  };
+
+  useInterval(fetchData, 5000);
+
+  async function deslogar() {
     await signOut();
     router.reload()
     console.log("passei 1")
@@ -84,10 +111,10 @@ export default function PrivateArea() {
       <div className={styles.container}>
         <div className={styles.barNavitaion} >
           <Button2
-           LinkTO = {"/views/home"}
-          fontSize={"19px"}
+            LinkTO={"/views/home"}
+            fontSize={"19px"}
             padding={"12px 19px"}
-            
+
             backgroundColor={'white'}
             border={'none'}
             cor={"black"}
@@ -95,9 +122,9 @@ export default function PrivateArea() {
             <CgProfile className={styles.iconGoogle} size={20}></CgProfile>
             Home
           </Button2>
-          
+
           <Button2
-           LinkTO = {"/views/votar"}
+            LinkTO={"/views/votar"}
             fontSize={"19px"}
             margin={"4px 0px"}
             padding={"10px 14px"}
@@ -106,36 +133,36 @@ export default function PrivateArea() {
             border={'none'}
             cor={"black"}
             width={"89%"}>
-              <CgReadme className={styles.iconGoogle} size={22}></CgReadme>
+            <CgReadme className={styles.iconGoogle} size={22}></CgReadme>
             Votar
           </Button2>
           <Button2
-                        LinkTO = {"/views/eleicao"}
-                        fontSize={"19px"}
-                        margin={"4px 0px"}
-                        padding={"10px 14px"}
-                        margintop={"1rem"}
-                        backgroundColor={'white'}
-                        border={'none'}
-                        cor={"black"}
-                        width={"89%"}
-                        >
-                        <CgReadme className={styles.iconGoogle} size={22}></CgReadme>
-                        Criar Eleicão
-                    </Button2>
+            LinkTO={"/views/eleicao"}
+            fontSize={"19px"}
+            margin={"4px 0px"}
+            padding={"10px 14px"}
+            margintop={"1rem"}
+            backgroundColor={'white'}
+            border={'none'}
+            cor={"black"}
+            width={"89%"}
+          >
+            <CgReadme className={styles.iconGoogle} size={22}></CgReadme>
+            Criar Eleicão
+          </Button2>
           <button className={styles.buttonLogOut} onClick={() => deslogar()}>Sair</button>
         </div>
-        <div className={styles.areaData}> 
-        <div className={styles.grid}>
+        <div className={styles.areaData}>
+          <div className={styles.grid}>
             {dados?.map((todo) => (
               <div key={todo.id} className={styles.item}>
-                <p className={styles.item}>{todo.nomeEleicao}</p><br/>
-                
+                <p className={styles.item}>{todo.nomeEleicao}</p><br />
+
               </div>
             ))}
-        </div>
-        {session ? 
-        <div>{session.user.name}<br/>{session.user.email}</div> : <div>Usuário não logado</div>}
+          </div>
+          {session ?
+            <div>{session.user.name}<br />{session.user.email}</div> : <div>Usuário não logado</div>}
         </div>
       </div>
     </div>
