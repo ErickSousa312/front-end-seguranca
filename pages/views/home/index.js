@@ -62,9 +62,10 @@ function useInterval(callback, delay) {
 }
 
 
-export default function PrivateArea() {
+export default function PrivateArea(props) {
   const socket = io();
   const [dados, setDados] = useState(null);
+  const [dados2, setDados2] = useState(null);
   const [erro, setErro] = useState(null);
   const { data: session, status } = useSession();
   const router = useRouter();
@@ -78,27 +79,29 @@ export default function PrivateArea() {
       await fetch(`http://localhost:3002/Eleicao/`)
         .then((response) => {
           if (response.ok) {
-            return response.json();   
+            return response.json();
           } else {
-            throw new Error('Erro ao criar eleição');
+            throw new Error('Erro ao buscar eleições');
           }
         })
         .then((data) => {
           setDados(data);
           console.log(data);
-          enqueueSnackbar('Eleição encontrada com sucesso', { variant: 'success' });
         })
         .catch((error) => {
           console.error(error);
-          enqueueSnackbar('Ocorreu um erro ao buscar a eleição', { variant: 'error' });
         });
     } catch (error) {
       console.log(error);
     }
-    
+
   };
 
-  useInterval(fetchData, 5000);
+  useEffect(()=>{
+    fetchData()
+  })
+
+  useInterval(fetchData, 15000);
 
   async function deslogar() {
     await signOut();
@@ -154,10 +157,12 @@ export default function PrivateArea() {
         </div>
         <div className={styles.areaData}>
           <div className={styles.grid}>
-            {dados?.map((todo) => (
-              <div key={todo.id} className={styles.item}>
-                <p className={styles.item}>{todo.nomeEleicao}</p><br />
-
+            {dados?.map(({ nomeEleicao, _id, opcoes }) => (
+              <div key={_id} className={styles.item}>
+                <p className={styles.item}>{nomeEleicao}</p><br />
+                  {opcoes.map(({ chave, valor, _id }) => (
+                      <p key={_id}>{chave}: {valor}</p>
+                  ))}
               </div>
             ))}
           </div>

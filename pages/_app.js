@@ -18,7 +18,6 @@ function App({ Component, pageProps, session }) {
           <Component{...pageProps} />
         </MainContainer>
       </SnackbarProvider>
-
     </motion.div>
   )
 
