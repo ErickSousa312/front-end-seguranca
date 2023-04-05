@@ -70,7 +70,7 @@ function reducer(dadosEleicao, action) {
             ...dadosEleicao,
             opcoes: [
                 ...dadosEleicao.opcoes.slice(0, action.Index),
-                action.payload,
+                { chave:action.payload, valor:0 },
                 ...dadosEleicao.opcoes.slice(action.Index + 1)
               ]
           };
@@ -208,7 +208,7 @@ export default function PrivateArea() {
                                         required
                                         type="text"
                                         id={`opcao-${opcao.id}`}
-                                        value={opcao.valor}
+                                        value={opcao.chave}
                                         onChange={(event) => dispath({ type: "salvarOpcao", payload: event.target.value, Index: index })}
                                     />
                                 </div>
