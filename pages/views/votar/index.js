@@ -19,6 +19,7 @@ import bcrypt from 'bcryptjs';
 import { SnackbarProvider, useSnackbar } from 'notistack';
 
 
+
 export async function verifyAuth(context) {
     const session = await getSession(context)
     if (!session) {
@@ -75,7 +76,8 @@ export default function PrivateArea() {
     const [formulario, setFormulario] = useState({
         opcaoSelecionada: null,
     });
-
+    const [showHash, setShowHash] = useState(false)
+    const [showModal, setShowModal] = useState(false);
     const [dados, setDados] = useState(null);
     const [opcoes, setOpcoes] = useState(null);
     const [erro, setErro] = useState(null);
@@ -88,6 +90,18 @@ export default function PrivateArea() {
         hash: "",
         idEleicao: "",
     })
+
+    const handleConfirm = async(e)=> {
+        e.preventDefault()
+        setShowModal(false)
+        setShowHash(true)
+        fetchs(e)
+      }
+
+      const  setModal = async (e) => {
+        e.preventDefault();
+        setShowModal(true)
+    }
 
     async function deslogar() {
         await signOut();
@@ -121,6 +135,7 @@ export default function PrivateArea() {
                     setDados(data);
                     console.log(data);
                     enqueueSnackbar('Eleição encontrada com sucesso', { variant: 'success' });
+
                 })
                 .catch((error) => {
                     console.error(error);
@@ -132,7 +147,8 @@ export default function PrivateArea() {
 
     }
 
-    async function fetchs(){
+    async function fetchs(e) {
+        e.preventDefault()
         try {
             await fetch(`http://localhost:3002/Voto`, {
                 method: 'POST',
@@ -161,14 +177,14 @@ export default function PrivateArea() {
                 })
 
 
-                await fetch(`http://localhost:3002/countVoto`, {
+            await fetch(`http://localhost:3002/countVoto`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
                     opcao: dadosEleicao.opcao,
-                    idEleicao:dadosEleicao.idEleicao,
+                    idEleicao: dadosEleicao.idEleicao,
                     hash: dadosEleicao.hash
                 })
             })
@@ -181,8 +197,6 @@ export default function PrivateArea() {
                 })
                 .then((data) => {
                     enqueueSnackbar('voto realizado com sucesso', { variant: 'success' });
-                    dispath({ type: 'reset' })
-                    setDados(null)
                     console.log(data.opcoes)
                 })
                 .catch(error => {
@@ -193,7 +207,7 @@ export default function PrivateArea() {
             console.log(error)
         }
     }
-    
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -212,6 +226,20 @@ export default function PrivateArea() {
         const hash = await bcrypt.hash(dado, 10);
         return hash;
     }
+
+    function handleCopy() {
+        navigator.clipboard.writeText(dadosEleicao.hash)
+          .then(() => {
+            enqueueSnackbar('Hash copiado com sucesso!', {
+                variant: 'success',
+                style: { backgroundColor: '#2596be' }
+              });
+          })
+          .catch((error) => {
+            console.error('Erro ao copiar o conteúdo: ', error);
+          });
+      }
+
 
     return (
         <div className={styles.mainContainer}>
@@ -275,7 +303,7 @@ export default function PrivateArea() {
                             {dados?.map(({ _id, opcoes, nomeEleicao }) => (
                                 <div key={nomeEleicao}>
                                     <h4>Opções:</h4>
-                                    <form onSubmit={handleSubmit}>
+                                    <form onSubmit={setModal}>
                                         {opcoes.map((to) => (
                                             <>
                                                 <div key={to._id}></div>
@@ -294,9 +322,28 @@ export default function PrivateArea() {
                                         </button>
                                     </form>
 
+
+                                    {showModal && (
+                                        <div className={styles.modal}>
+                                            <div className={styles['modal-content']}>
+                                                <p>Deseja confirmar a ação?</p>
+                                                <button onClick={handleConfirm}>Sim</button>
+                                                <button onClick={() => setShowModal(false)}>Não</button>
+                                            </div>
+                                        </div>
+                                    )}
+                                    {showHash && (
+                                        <div className={styles.modal}>
+                                            <div className={styles['modal-content']}>
+                                                <p>esse é o hash do seu voto, Guarde-o com segurança:<br/><br/>{dadosEleicao.hash}</p>
+                                                <br/>
+                                                <button onClick={handleCopy} >Copiar</button>
+                                                <button onClick={() => {setDados(null),dispath({ type: 'reset' }), setShowHash(false)}}>Sair</button>
+                                            </div>
+                                        </div>
+                                    )}
                                 </div>
                             ))}
-
                         </div>
                     </div>
                 </div>
