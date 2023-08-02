@@ -65,7 +65,7 @@ function reducer(dadosEleicao, action) {
             ...dadosEleicao,
             opcoes: dadosEleicao.opcoes.slice(0, -1)// cria uma nova array excluindo o último elemento
         };
-    case 'salvarOpcao':
+    case 'salvarOpcao'://na votação é criadas varios inputs para escrever as opções de votos, e essa função encixa o onCange no input correto
         return {
             ...dadosEleicao,
             opcoes: [
