@@ -33,6 +33,7 @@ async function redirectElseSignedIn() {
     }
   }
 }
+
 function reducer(dadosLogin, action) {
   switch (action.type) {
     case 'setEmail':

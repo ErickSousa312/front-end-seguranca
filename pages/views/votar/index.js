@@ -284,6 +284,18 @@ export default function PrivateArea() {
                         <CgReadme className={styles.iconGoogle} size={22}></CgReadme>
                         Criar Eleicão
                     </Button2>
+                    <Button2
+            LinkTO={"/views/hashfy"}
+            fontSize={"19px"}
+            padding={"12px 19px"}
+
+            backgroundColor={'white'}
+            border={'none'}
+            cor={"black"}
+            width={"89%"}>
+            <CgProfile className={styles.iconGoogle} size={20}></CgProfile>
+            Comparar hash
+          </Button2>
                     <button className={styles.buttonLogOut} onClick={() => deslogar()}>Sair</button>
                 </div>
                 <div className={styles.areaData}>
